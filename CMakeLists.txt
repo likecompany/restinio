@@ -3,13 +3,6 @@ cmake_minimum_required(VERSION 3.5)
 SET(CMAKE_CXX_STANDARD 14)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Determine if RESTinio is built as a subproject (using add_subdirectory)
-# or if it is the master project.
-SET(RESTINIO_MASTER_PROJECT ON)
-IF (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-	SET(RESTINIO_MASTER_PROJECT ON)
-ENDIF ()
-
 option(RESTINIO_INSTALL "Generate the install target." ${RESTINIO_MASTER_PROJECT})
 option(RESTINIO_TEST "Build the tests." ${RESTINIO_MASTER_PROJECT})
 option(RESTINIO_SAMPLE "Build samples." ${RESTINIO_MASTER_PROJECT})
@@ -136,49 +129,6 @@ IF (RESTINIO_MASTER_PROJECT)
 	# ------------------------------------------------------------------------------
 
 	# ------------------------------------------------------------------------------
-	# Tests, samples and benchmark dependencies:
-	# OpenSSL
-	find_package(OpenSSL)
-	IF ( OPENSSL_FOUND )
-		message("OpenSSL include dir: ${OPENSSL_INCLUDE_DIR}")
-		message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
-	ENDIF ( OPENSSL_FOUND )
-
-	# PCRE
-	find_package(PCRE)
-	IF (PCRE_FOUND)
-		message( STATUS "PCRE_LIBRARIES='" ${PCRE_LIBRARIES} "'" )
-		message( STATUS "PCRE_INCLUDE_DIRS='" ${PCRE_INCLUDE_DIRS} "'" )
-	ENDIF ()
-
-	# PCRE2
-	find_package(PCRE2)
-	IF (PCRE2_FOUND)
-		message( STATUS "PCRE2_LIBRARIES='" ${PCRE2_LIBRARIES} "'" )
-		message( STATUS "PCRE2_INCLUDE_DIRS='" ${PCRE2_INCLUDE_DIRS} "'" )
-	ENDIF ()
-
-	# PCRE2
-	find_package(PCRE2)
-	IF (PCRE2_FOUND)
-		message( STATUS "PCRE2_LIBRARIES='" ${PCRE2_LIBRARIES} "'" )
-		message( STATUS "PCRE2_INCLUDE_DIRS='" ${PCRE2_INCLUDE_DIRS} "'" )
-	ENDIF ()
-
-	# ------------------------------------------------------------------------------
-	# SObjectizer
-	IF (RESTINIO_SOBJECTIZER_ENABLED)
-		IF (RESTINIO_USE_EXTERNAL_SOBJECTIZER)
-			find_package(sobjectizer)
-		ELSE ()
-			SET(SOBJECTIZER_BUILD_STATIC ON)
-			add_subdirectory(so_5)
-		ENDIF ()
-		SET(SOBJECTIZER_LIBS sobjectizer::StaticLib)
-	ENDIF()
-
-
-	# ------------------------------------------------------------------------------
 	# Zlib
 	find_package(ZLIB)
 
@@ -195,26 +145,3 @@ ENDIF (RESTINIO_MASTER_PROJECT)
 
 # RESTinio itself.
 add_subdirectory(restinio)
-
-# ------------------------------------------------------------------------------
-# Tests
-IF (RESTINIO_TEST)
-	enable_testing()
-	add_subdirectory(test)
-
-	IF (WIN32)
-		configure_file(${CMAKE_SOURCE_DIR}/cmake/run_tests.bat ${CMAKE_BINARY_DIR} NEWLINE_STYLE WIN32)
-	ENDIF ()
-ENDIF ()
-
-# ------------------------------------------------------------------------------
-# Samples
-IF (RESTINIO_SAMPLE)
-	add_subdirectory(sample)
-ENDIF ()
-
-# ------------------------------------------------------------------------------
-# Benches
-IF (RESTINIO_BENCH)
-	add_subdirectory(benches)
-ENDIF ()
