@@ -18,7 +18,7 @@ option(RESTINIO_USE_EXTERNAL_SOBJECTIZER "Allow add_subdirectory(so_5) in the ma
 
 # Since v.0.6.5 a user can force usage of already installed http-parser
 # library.
-option(RESTINIO_USE_EXTERNAL_HTTP_PARSER "Use already installed http-parser library" OFF)
+option(RESTINIO_USE_EXTERNAL_HTTP_PARSER "Use already installed http-parser library" ON)
 
 # Since v.0.6.7 a user can force usage of already installed nonstd
 # libraries.
