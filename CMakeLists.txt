@@ -115,7 +115,7 @@ IF (RESTINIO_MASTER_PROJECT)
 		ENDIF ()
 
 		# fmtlib
-		add_subdirectory(fmt)
+		find_package(fmt REQUIRED)
 	ENDIF ()
 
 	# If RESTINIO_USE_EXTERNAL_*_LITE is defined we should
