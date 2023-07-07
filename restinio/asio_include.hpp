@@ -8,57 +8,6 @@
 
 #pragma once
 
-#if !defined(RESTINIO_USE_BOOST_ASIO)
-
-// RESTinio uses stand-alone version of asio.
-#include <asio.hpp>
-
-// Define added to not have to distinguish between boost and non-boost asio in
-// other code.
-#define RESTINIO_ASIO_VERSION ASIO_VERSION
-
-namespace restinio
-{
-	namespace asio_ns = ::asio;
-
-	//! @name Adoptation functions to cover differences between snad-alone and beast asio.
-	///@{
-	inline bool
-	error_is_operation_aborted( const asio_ns::error_code & ec ) noexcept
-	{
-		return ec == asio_ns::error::operation_aborted;
-	}
-
-	inline bool
-	error_is_eof( const asio_ns::error_code & ec ) noexcept
-	{
-		return ec == asio_ns::error::eof;
-	}
-	///@}
-
-	namespace asio_ec
-	{
-		constexpr auto  eof = asio_ns::error::eof;
-		inline const auto & system_category() { return asio_ns::system_category(); }
-	} /* namespace err */
-	//! \}
-
-	//! An alias for base class of error category entity.
-	using error_category_base_t = asio_ns::error_category;
-
-// Define a proxy macro for having the same name for asio stand-alone and boost.
-#define RESTINIO_ERROR_CATEGORY_NAME_NOEXCEPT ASIO_ERROR_CATEGORY_NOEXCEPT
-
-} /* namespace restinio */
-
-	#if defined(ASIO_HAS_WINDOWS_OVERLAPPED_PTR)
-		// Define feature macro with the same name for stand-alone and boost asio.
-		#define RESTINIO_ASIO_HAS_WINDOWS_OVERLAPPED_PTR
-	#endif
-
-#else
-
-// RESTinio uses boost::asio.
 #include <boost/asio.hpp>
 
 // Define added to not have to distinguish between boost and non-boost asio in
@@ -107,8 +56,6 @@ namespace restinio
 		// Define feature macro with the same name for stand-alone and boost asio.
 		#define RESTINIO_ASIO_HAS_WINDOWS_OVERLAPPED_PTR
 	#endif
-
-#endif
 
 namespace restinio
 {
