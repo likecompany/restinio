@@ -17,7 +17,7 @@
 #include <restinio/optional.hpp>
 #include <restinio/common_types.hpp>
 
-#include <http_parser.h>
+#include "http_parser.h"
 
 #include <iosfwd>
 #include <string>
